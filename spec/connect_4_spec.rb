@@ -135,7 +135,7 @@ describe Game do
       let(:input) { StringIO.new("1\n1\n2\n") }
       before do
         allow(game).to receive(:place_piece).and_return(false, false, true)
-        allow(game).to receive(:puts).with('Enter column to place your piece').exactly(3).times
+        allow(game).to receive(:puts).with('Enter column to place your piece player1').exactly(3).times
       end
       it 'puts error message twice' do
         error_message = 'Invalid column or column is full please enter column'
@@ -147,7 +147,7 @@ describe Game do
       let(:input) { StringIO.new("2\n") }
       before do
         allow(game).to receive(:place_piece).and_return(true)
-        allow(game).to receive(:puts).with('Enter column to place your piece')
+        allow(game).to receive(:puts).with('Enter column to place your piece player1')
       end
       it 'does not put error message' do
         error_message = 'Invalid column or column is full please enter column'
