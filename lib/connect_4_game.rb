@@ -19,10 +19,9 @@ class Game
     [[0, 2], [1, 2], [2, 2], [3, 2], [4, 2], [5, 2], [6, 2]],
     [[0, 3], [1, 3], [2, 3], [3, 3], [4, 3], [5, 3], [6, 3]],
     [[0, 4], [1, 4], [2, 4], [3, 4], [4, 4], [5, 4], [6, 4]],
-    [[0, 5], [1, 5], [2, 5], [3, 5], [4, 5], [5, 5], [6, 5]],
-    [[0, 6], [1, 6], [2, 6], [3, 6], [4, 6], [5, 6], [6, 6]]
+    [[0, 5], [1, 5], [2, 5], [3, 5], [4, 5], [5, 5], [6, 5]]
   ].freeze
-  VERTICAL_LINES = [*0..6].freeze
+  VERTICAL_LINES = [*0..5].freeze
   DIAGONAL_LINES = [
     [[3, 0], [4, 1], [5, 2], [6, 3]],
     [[2, 0], [3, 1], [4, 2], [5, 3], [6, 4]],
@@ -38,6 +37,8 @@ class Game
     [[3, 5], [4, 4], [5, 3], [6, 2]]
   ].freeze
   def place_piece(column, player)
+    return false if @board[column].nil?
+
     i = @board[column].index('O')
     return false if i.nil?
 
@@ -45,14 +46,11 @@ class Game
   end
 
   def check_win(player)
-    vertical = check_vertical(player)
-    return true if vertical.true?
+    return true if check_vertical(player)
 
-    horizontal = check_horizontal(player)
-    return true if horizontal.true?
+    return true if check_horizontal(player)
 
-    diagonal = check_diagonal(player)
-    return true if diagonal.true?
+    return true if check_diagonal(player)
 
     false
   end
@@ -91,24 +89,44 @@ class Game
     false
   end
 
-  def check_piece (player)
+  def check_piece(player)
     loop do
-      puts 'Enter column to place your piece'
-      break if place_piece(gets.chomp, player)
+      puts "Enter column to place your piece #{player.name}"
+      break if place_piece(gets.chomp.to_i, player)
 
       puts 'Invalid column or column is full please enter column'
     end
   end
 
   def print_board
+    puts "       #{[*0..6].join('  ')}\n\n"
     HORIZONTAL_LINES.reverse.each do |array|
       output = []
       array.each { |coordinate| output << @board[coordinate[0]][coordinate[1]] }
-      puts output.join(' ')
+      puts "       #{output.join('  ')}\n\n"
     end
+  end
+
+  def winner_announce
+    print_board
+    puts "Congtratulations #{@winner.name} you win!"
+  end
+
+  def play_game(player1, player2)
+    loop do
+      print_board
+      check_piece(player1)
+      break if check_win(player1)
+
+      print_board
+      check_piece(player2)
+      break if check_win(player2)
+    end
+    winner_announce
   end
 end
 
+# Holds player information
 class Player
   attr_reader :name, :symbol
 
@@ -117,4 +135,3 @@ class Player
     @symbol = symbol
   end
 end
-

@@ -24,11 +24,17 @@ describe Game do
         game.instance_variable_set(:@board, [%w[Y R Y R Y R], %w[O O O O O O], %w[O O O O O O], %w[O O O O O O], %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]])
       end
       it 'returns false' do
-        returned_value = game.place_piece(0, 'Y')
+        returned_value = game.place_piece(0, player2)
         expect(returned_value).to eq(false)
       end
       it 'does not change' do
-        expect { game.place_piece(0, 'Y') }.not_to(change { game.instance_variable_get(:@board) })
+        expect { game.place_piece(0, player2) }.not_to(change { game.instance_variable_get(:@board) })
+      end
+    end
+    context 'when invalid value is used' do
+      it 'returns false' do
+        returned_value = game.place_piece(99, player2)
+        expect(returned_value).to eq(false)
       end
     end
   end

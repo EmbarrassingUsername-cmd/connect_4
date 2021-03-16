@@ -1,4 +1,4 @@
-
+# Methods used to genrate win condition arrays
 def make_diagonal_descending
   [[0, 3], [0, 4], [0, 5], [1, 5], [2, 5], [3, 5]].map do |i|
     output = []
